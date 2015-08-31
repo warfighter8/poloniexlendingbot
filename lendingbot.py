@@ -50,13 +50,15 @@ gapBottom = float(config.get("BOT","gapbottom"))
 gapTop = float(config.get("BOT","gaptop"))
 sixtyDayThreshold = float(config.get("BOT","sixtydaythreshold"))/100
 
-coinconfig = (json.loads(config.get("BOT","coinconfig")))
-coincfg = {} #parsed
-
-#coinconfig parser
-for cur in coinconfig:
-	cur = cur.split(':')
-	coincfg[cur[0]] = dict(minrate=(float(cur[1]))/100, maxactive=float(cur[2]))
+try:
+	coincfg = {} #parsed
+	coinconfig = (json.loads(config.get("BOT","coinconfig")))
+	#coinconfig parser
+	for cur in coinconfig:
+		cur = cur.split(':')
+		coincfg[cur[0]] = dict(minrate=(float(cur[1]))/100, maxactive=float(cur[2]))
+except Exception as e:
+	pass
 	
 #sanity checks
 if sleepTime < 1 or sleepTime > 3600:
