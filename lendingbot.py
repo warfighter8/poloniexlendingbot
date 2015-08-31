@@ -30,7 +30,6 @@ sixtydaythreshold = 0.2
 #custom config per coin, useful when wanting exiting the market etc.
 #syntax: [COIN:mindailyrate:maxactiveamount, ... COIN:mindailyrate:maxactiveamount]
 #coinconfig = ["BTC:0.18:1","CLAM:0.6:1"]
-coinconfig = ["BTC:0.18:1","CLAM:0.6:1"]
 """
 
 loadedFiles = config.read([config_location])
