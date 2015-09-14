@@ -89,24 +89,30 @@ def timestamp():
 bot = Poloniex(config.get("API","apikey"), config.get("API","secret"))
 log = Logger()
 
-def totalLended():
+#total lended global variable
+totalLended = {}
+
+def refreshTotalLended():
+        global totalLended
 	cryptoLended = bot.returnActiveLoans()
 
-	allPairs = {}
+	totalLended = {}
 	cryptoLendedSum = float(0)
 
 	for item in cryptoLended["provided"]:
 		itemStr = item["amount"].encode("utf-8")
 		itemFloat = float(itemStr)
-		if item["currency"] in allPairs:
-			cryptoLendedSum = allPairs[item["currency"]] + itemFloat
-			allPairs[item["currency"]] = cryptoLendedSum
+		if item["currency"] in totalLended:
+			cryptoLendedSum = totalLended[item["currency"]] + itemFloat
+			totalLended[item["currency"]] = cryptoLendedSum
 		else:
 			cryptoLendedSum = itemFloat
-			allPairs[item["currency"]] = cryptoLendedSum
+			totalLended[item["currency"]] = cryptoLendedSum
+
+def stringifyTotalLended():
 	result = 'Lended: '
-	for key in sorted(allPairs):
-		result += '[' + "%.3f" % float(allPairs[key]) + ' '
+	for key in sorted(totalLended):
+		result += '[' + "%.3f" % float(totalLended[key]) + ' '
 		result += key + '] '
 	return result
 
@@ -168,13 +174,14 @@ def cancelAndLoanAll():
 		step = (gapTop - gapBottom)/spreadLend
 		#TODO check for minimum lendable amount, and try to decrease the spread. e.g. at the moment balances lower than 0.001 won't be lent
 		#in case of empty lendbook, lend at max
+                log.log(activeCur + ' active + total: ' + str((float(activeBal)+float(totalLended[activeCur]))))
 		if len(loans['offers']) == 0:
 			createLoanOffer(activeCur,float(activeBal)-lent,maxDailyRate)
 		for offer in loans['offers']:
 			s = s + float(offer['amount'])
 			s2 = s
 			while True:
-				if s2 > float(activeBal)*(gapBottom/100+(step/100*j)) and float(offer['rate']) > curMinDailyRate:
+				if s2 > (float(activeBal)+float(totalLended[activeCur]))*(gapBottom/100+(step/100*j)) and float(offer['rate']) > curMinDailyRate:
 					j += 1
 					#ran into a problem were 14235.82451057 couldn't be lent because of rounding
 					s2 = s2 + float(activeBal)/spreadLend - 0.00000001
@@ -195,7 +202,8 @@ log.log('Welcome to Poloniex Lending Bot')
 
 while True:
 	try:
-		log.refreshStatus(totalLended())
+                refreshTotalLended()
+		log.refreshStatus(stringifyTotalLended())
 		cancelAndLoanAll()
         except Exception as e:
                 log.log("ERROR: " + str(e))
