@@ -110,6 +110,35 @@ def totalLended():
 		result += key + '] '
 	return result
 
+cryptoLendedOld = {u'provided': []}
+cryptoLendedAll = {}
+
+def profit():
+	global cryptoLendedOld
+	global cryptoLendedAll
+	cryptoLended = bot.returnActiveLoans()
+
+        cryptoLendedSum = float(0)
+
+        for item in cryptoLended["provided"]:
+		for itemOld in cryptoLendedOld["provided"]:
+			if item["id"] == itemOld["id"]:	
+        	        	itemFloat = float(item["fees"].encode("utf-8"))
+                                itemFloatOld = float(itemOld["fees"].encode("utf-8"))
+                		if item["currency"] in cryptoLendedAll:
+                        		cryptoLendedSum = cryptoLendedAll[item["currency"]] + itemFloat - itemFloatOld 
+                        		cryptoLendedAll[item["currency"]] = cryptoLendedSum
+                		else:
+                        		cryptoLendedSum = itemFloat - itemFloatOld
+                        		cryptoLendedAll[item["currency"]] = cryptoLendedSum
+				break
+	cryptoLendedOld = cryptoLended
+        result = 'Run-time: '
+        for key in sorted(cryptoLendedAll):
+                result += '[' + "%.8f" % float(cryptoLendedAll[key]) + ' '
+                result += key + '] '
+        return result
+
 def createLoanOffer(cur,amt,rate):
 	days = '2'
 	#if (minDailyRate - 0.000001) < rate and float(amt) > 0.001:
@@ -191,36 +220,6 @@ def cancelAndLoanAll():
 			if i == len(loans['offers']): #end of the offers lend at max
 				createLoanOffer(activeCur,float(activeBal)-lent,maxDailyRate)
 
-cryptoLendedOld = {u'provided': []}
-cryptoLendedAll = {}
-
-def profit():
-	global cryptoLendedOld
-	global cryptoLendedAll
-	cryptoLended = bot.returnActiveLoans()
-
-        cryptoLendedSum = float(0)
-
-        for item in cryptoLended["provided"]:
-		for itemOld in cryptoLendedOld["provided"]:
-			if item["id"] == itemOld["id"]:	
-        	        	itemFloat = float(item["fees"].encode("utf-8"))
-                                itemFloatOld = float(itemOld["fees"].encode("utf-8"))
-#				log.log('Matching Loans: ' + str(item["id"]) + ' ' + str(itemOld["id"]) + ' ' + str(itemFloat) + ' ' + str(itemFloatOld))
-                		if item["currency"] in cryptoLendedAll:
-                        		cryptoLendedSum = cryptoLendedAll[item["currency"]] + itemFloat - itemFloatOld 
-                        		cryptoLendedAll[item["currency"]] = cryptoLendedSum
-                		else:
-                        		cryptoLendedSum = itemFloat - itemFloatOld
-                        		cryptoLendedAll[item["currency"]] = cryptoLendedSum
-				break
-	cryptoLendedOld = cryptoLended
-        result = 'Run-time: '
-        for key in sorted(cryptoLendedAll):
-                result += '[' + "%.8f" % float(cryptoLendedAll[key]) + ' '
-                result += key + '] '
-        return result
-
 log.log('Welcome to Poloniex Lending Bot')
 
 while True:
@@ -233,4 +232,4 @@ while True:
 	except KeyboardInterrupt:
 		print '\nbye'
 		exit(0)
-	time.sleep(sleepTime)
+time.sleep(sleepTime)
