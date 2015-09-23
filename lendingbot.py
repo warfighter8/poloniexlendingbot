@@ -184,7 +184,7 @@ def cancelAndLoanAll():
 			s = s + float(offer['amount'])
 			s2 = s
 			while True:
-				if s2 > (activePlusLended*(gapBottom/100+(step/100*j))) and float(offer['rate']) > curMinDailyRate:
+				if s2 > activePlusLended*(gapBottom/100+(step/100*j)) and float(offer['rate']) > curMinDailyRate:
 					j += 1
 					#ran into a problem were 14235.82451057 couldn't be lent because of rounding
 					s2 = s2 + float(activeBal)/spreadLend - 0.00000001
