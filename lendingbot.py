@@ -174,14 +174,17 @@ def cancelAndLoanAll():
 		step = (gapTop - gapBottom)/spreadLend
 		#TODO check for minimum lendable amount, and try to decrease the spread. e.g. at the moment balances lower than 0.001 won't be lent
 		#in case of empty lendbook, lend at max
-                log.log(activeCur + ' active + total: ' + str((float(activeBal)+float(totalLended[activeCur]))))
+                activePlusLended = float(activeBal)
+                if activeCur in totalLended:
+                        activePlusLended += float(totalLended[activeCur])
+                log.log(activeCur + ' active + lended: ' + str(activePlusLended))
 		if len(loans['offers']) == 0:
 			createLoanOffer(activeCur,float(activeBal)-lent,maxDailyRate)
 		for offer in loans['offers']:
 			s = s + float(offer['amount'])
 			s2 = s
 			while True:
-				if s2 > (float(activeBal)+float(totalLended[activeCur]))*(gapBottom/100+(step/100*j)) and float(offer['rate']) > curMinDailyRate:
+				if s2 > (activePlusLended*(gapBottom/100+(step/100*j))) and float(offer['rate']) > curMinDailyRate:
 					j += 1
 					#ran into a problem were 14235.82451057 couldn't be lent because of rounding
 					s2 = s2 + float(activeBal)/spreadLend - 0.00000001
