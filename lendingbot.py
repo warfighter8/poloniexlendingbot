@@ -23,8 +23,8 @@ maxdailyrate = 2
 spreadlend = 3
 #The depth of lendbook (in percent of lendable balance) to move through before placing the first (gapbottom) and last (gaptop) offer.
 #if gapbottom is set to 0, the first offer will be at the lowest possible rate. However some low value is recommended (say 10%) to skip dust offers
-gapbottom = 10
-gaptop = 200
+gapbottom = 1
+gaptop = 500
 #Daily lend rate threshold after which we offer lends for 60 days as opposed to 2. If set to 0 all offers will be placed for a 2 day period
 sixtydaythreshold = 0.2
 #custom config per coin, useful when closing positions etc.
