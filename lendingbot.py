@@ -4,6 +4,9 @@ from ConfigParser import SafeConfigParser
 from Logger import Logger
 from decimal import *
 
+#set decimal precision
+getcontext().prec = 8
+
 config = SafeConfigParser()
 config_location = 'default.cfg'
 
@@ -193,6 +196,7 @@ def cancelAndLoanAll():
 					lent = lent + (s2-s)
 					break
 				if j == spreadLend:
+                                        log.log('DEBUG: active-lent ' + str(Decimal(activeBal)) + ' - ' + str(lent) + ' = ' + str((Decimal(activeBal)-lent)))
 					createLoanOffer(activeCur,Decimal(activeBal)-lent,offer['rate'])
 	                                break
 			if j == spreadLend:
