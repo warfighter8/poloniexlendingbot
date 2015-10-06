@@ -177,7 +177,6 @@ def cancelAndLoanAll():
                 activePlusLended = float(activeBal)
                 if activeCur in totalLended:
                         activePlusLended += float(totalLended[activeCur])
-                log.log(activeCur + ' active + lended: ' + str(activePlusLended))
 		if len(loans['offers']) == 0:
 			createLoanOffer(activeCur,float(activeBal)-lent,maxDailyRate)
 		for offer in loans['offers']:
