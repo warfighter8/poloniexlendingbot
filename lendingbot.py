@@ -187,8 +187,7 @@ def cancelAndLoanAll():
 			while True:
 				if s2 > activePlusLended*(gapBottom/100+(step/100*j)) and Decimal(offer['rate']) > curMinDailyRate:
 					j += 1
-					#ran into a problem were 14235.82451057 couldn't be lent because of rounding
-					s2 = s2 + Decimal(activeBal)/spreadLend - Decimal(0.00000001)
+					s2 = s2 + Decimal(activeBal)/spreadLend
 				else:
 					createLoanOffer(activeCur,s2-s,offer['rate'])
 					lent = lent + (s2-s)
