@@ -53,7 +53,7 @@ maxDailyRate = Decimal(config.get("BOT","maxdailyrate"))/100
 spreadLend = int(config.get("BOT","spreadlend"))
 gapBottom = Decimal(config.get("BOT","gapbottom"))
 gapTop = Decimal(config.get("BOT","gaptop"))
-sixtyDayThreshold = Decimal(config.get("BOT","sixtydaythreshold"))/100
+sixtyDayThreshold = float(config.get("BOT","sixtydaythreshold"))/100
 
 try:
 	coincfg = {} #parsed
@@ -124,7 +124,7 @@ def createLoanOffer(cur,amt,rate):
 	days = '2'
 	#if (minDailyRate - 0.000001) < rate and Decimal(amt) > 0.001:
 	if float(amt) > 0.001:
-		rate = Decimal(rate) - Decimal(0.000001) #lend offer just bellow the competing one
+		rate = float(rate) - 0.000001 #lend offer just bellow the competing one
 		amt = "%.8f" % Decimal(amt)
 		if rate > sixtyDayThreshold:
 			days = '60'
