@@ -160,7 +160,6 @@ def cancelAndLoanAll():
 
 		activeBal = lendingBalances[activeCur]
 
-                log.log('Balance of ' + activeCur + ' is ' + activeBal)
 		#min daily rate can be changed per currency
 		curMinDailyRate = minDailyRate
 		if activeCur in coincfg:
@@ -195,14 +194,12 @@ def cancelAndLoanAll():
 					lent = lent + (s2-s).quantize(SATOSHI)
 					break
 				if j == spreadLend:
-                                        log.log('DEBUG: active-lent ' + str(Decimal(activeBal)) + ' - ' + str(lent) + ' = ' + str((Decimal(activeBal)-lent)))
 					createLoanOffer(activeCur,Decimal(activeBal)-lent,offer['rate'])
 	                                break
 			if j == spreadLend:
 				break
 			i += 1
 			if i == len(loans['offers']): #end of the offers lend at max
-                                log.log('DEBUG: active-lent ' + str(Decimal(activeBal)) + ' - ' + str(lent) + ' = ' + str((Decimal(activeBal)-lent)))
 				createLoanOffer(activeCur,Decimal(activeBal)-lent,maxDailyRate)
 
 log.log('Welcome to Poloniex Lending Bot')
