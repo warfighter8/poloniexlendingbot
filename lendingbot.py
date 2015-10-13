@@ -4,8 +4,7 @@ from ConfigParser import SafeConfigParser
 from Logger import Logger
 from decimal import *
 
-#set decimal precision
-getcontext().prec = 8
+SATOSHI = Decimal(10) ** -8
 
 config = SafeConfigParser()
 config_location = 'default.cfg'
@@ -193,7 +192,7 @@ def cancelAndLoanAll():
 					s2 = s2 + Decimal(activeBal)/spreadLend
 				else:
 					createLoanOffer(activeCur,s2-s,offer['rate'])
-					lent = lent + (s2-s)
+					lent = lent + (s2-s).quantize(SATOSHI)
 					break
 				if j == spreadLend:
                                         log.log('DEBUG: active-lent ' + str(Decimal(activeBal)) + ' - ' + str(lent) + ' = ' + str((Decimal(activeBal)-lent)))
@@ -203,6 +202,7 @@ def cancelAndLoanAll():
 				break
 			i += 1
 			if i == len(loans['offers']): #end of the offers lend at max
+                                log.log('DEBUG: active-lent ' + str(Decimal(activeBal)) + ' - ' + str(lent) + ' = ' + str((Decimal(activeBal)-lent)))
 				createLoanOffer(activeCur,Decimal(activeBal)-lent,maxDailyRate)
 
 log.log('Welcome to Poloniex Lending Bot')
