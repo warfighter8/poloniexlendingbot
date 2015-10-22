@@ -1,4 +1,5 @@
 import io, sys, time, datetime, urllib2, json
+import multiprocessing
 from poloniex import Poloniex
 from ConfigParser import SafeConfigParser
 from Logger import Logger
