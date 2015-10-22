@@ -5,6 +5,27 @@ from ConfigParser import SafeConfigParser
 from Logger import Logger
 from decimal import *
 
+#TEMPORARY JUST FOR DEBUGGING
+# Import smtplib for the actual sending function
+import smtplib
+
+# Import the email modules we'll need
+from email.mime.text import MIMEText
+
+def sendEmail():
+    msg = MIMEText("I think the bot timed out, come check the log")
+    msg['Subject'] = 'The lendingbot timedout'
+    msg['From'] = "noreply@kebabs.com"
+    msg['To'] = "debug@cryptity.com"
+
+    # Send the message via our own SMTP server, but don't include the
+    # envelope header.
+    s = smtplib.SMTP('localhost')
+    s.sendmail(me, [you], msg.as_string())
+    s.quit()
+
+#END TEMPORARY
+
 SATOSHI = Decimal(10) ** -8
 
 config = SafeConfigParser()
@@ -225,11 +246,12 @@ if __name__ == '__main__':
         p.start()
 
         # Wait for 10 seconds or until process finishes
-        p.join(10)
+        p.join(3)
 
         # If thread is still active
         if p.is_alive():
-                log.log("running... let's kill it...")
+                log.log("running too long... let's kill it...")
+                sendEmail()
 
                 # Terminate
                 p.terminate()
