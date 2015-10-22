@@ -205,7 +205,8 @@ def cancelAndLoanAll():
 
 log.log('Welcome to Poloniex Lending Bot')
 
-while True:
+if __name__ == '__main__':
+    while True:
 	try:
                 refreshTotalLended()
 		log.refreshStatus(stringifyTotalLended())
