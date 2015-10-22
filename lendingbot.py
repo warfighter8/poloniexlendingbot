@@ -13,7 +13,7 @@ import smtplib
 from email.mime.text import MIMEText
 
 def sendEmail():
-    msg = MIMEText("I think the bot timed out, come check the log")
+    msg = MIMEText("I think the bot timed out, come check the log at " + time.time())
     msg['Subject'] = 'The lendingbot timedout'
     msg['From'] = "noreply@kebabs.com"
     msg['To'] = "debug@cryptity.com"
@@ -246,7 +246,7 @@ if __name__ == '__main__':
         p.start()
 
         # Wait for 10 seconds or until process finishes
-        p.join(3)
+        p.join(60)
 
         # If thread is still active
         if p.is_alive():
