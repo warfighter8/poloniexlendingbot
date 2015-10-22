@@ -229,7 +229,7 @@ if __name__ == '__main__':
 
         # If thread is still active
         if p.is_alive():
-                print "running... let's kill it..."
+                log.log("running... let's kill it...")
 
                 # Terminate
                 p.terminate()
