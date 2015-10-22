@@ -13,7 +13,7 @@ import smtplib
 from email.mime.text import MIMEText
 
 def sendEmail():
-    msg = MIMEText("I think the bot timed out, come check the log at " + time.time())
+    msg = MIMEText("I think the bot timed out, come check the log at " + str(time.time()))
     msg['Subject'] = 'The lendingbot timedout'
     msg['From'] = "noreply@kebabs.com"
     msg['To'] = "debug@cryptity.com"
