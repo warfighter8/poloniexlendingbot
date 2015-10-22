@@ -202,11 +202,7 @@ def cancelAndLoanAll():
 			i += 1
 			if i == len(loans['offers']): #end of the offers lend at max
 				createLoanOffer(activeCur,Decimal(activeBal)-lent,maxDailyRate)
-
-log.log('Welcome to Poloniex Lending Bot')
-
-if __name__ == '__main__':
-    while True:
+def doSomeShit():
 	try:
                 refreshTotalLended()
 		log.refreshStatus(stringifyTotalLended())
@@ -217,4 +213,26 @@ if __name__ == '__main__':
 	except KeyboardInterrupt:
 		print '\nbye'
 		exit(0)
+
+
+if __name__ == '__main__':
+
+    log.log('Welcome to Poloniex Lending Bot')
+
+    while True:
+        # Start bar as a process
+        p = multiprocessing.Process(target=doSomeShit)
+        p.start()
+
+        # Wait for 10 seconds or until process finishes
+        p.join(10)
+
+        # If thread is still active
+        if p.is_alive():
+                print "running... let's kill it..."
+
+                # Terminate
+                p.terminate()
+                p.join()
+
         time.sleep(sleepTime)
