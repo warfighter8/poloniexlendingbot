@@ -17,7 +17,7 @@ git clone https://github.com/Mikadily/poloniexlendingbot
 cd poloniexlendingbot/
 python lendingbot.py
 ```
-When you first run the script a default.cnf will be generated. Edit it with your apikey and secret values.
+When you first run the script a default.cfg will be generated. Edit it with your apikey and secret values.
 
 ###Windows
 1. Install poloniexlendingbot - go to https://github.com/Mikadily/poloniexlendingbot and click the "Download Zip" button on the right. Unzip it into any location you choose.
